@@ -16,7 +16,7 @@ data <- fromJSON("C:/Users/jensp/Downloads/TVs-all-merged.json")
 webshops <- c("amazon.com", "newegg.com", "bestbuy.com", "thenerds.net")
 webshops_list <- as.list(webshops)
 
-
+#function to determine whether two products are from the same shop
 sameShop <- function(product_i, product_j) {
   return(product_list[[product_i]][[1]]==product_list[[product_j]][[1]])
 }
@@ -43,7 +43,7 @@ diffBrand <- function(product_i, product_j) {
     return(FALSE)
   }
 }
-
+#function to obtain the key value pairs
 kv <- function(product) {
   #featuresMap <- data[[product]]$featuresMap
   featuresMap <- product_list[[product]][[5]]
@@ -51,6 +51,7 @@ kv <- function(product) {
   return(pairs_list)
 }
 
+#function to calculate the similarity using q-gram distance
 q3 <- 3
 calcSim <- function(s1, s2) {
   # Function to calculate the q-gram distance between two strings
@@ -66,7 +67,7 @@ calcSim <- function(s1, s2) {
   
   return(similarity_value)
 }
-
+#function that determines model words from the values of attributes of products
 exMW <- function(nmk) {
   nmk <- lapply(nmk, function(x) gsub('["”]', "inch", x))
   nmk <- lapply(nmk, function(x) gsub('-inch', "inch", x))
@@ -80,6 +81,7 @@ exMW <- function(nmk) {
   return(model_nmk)
 }
 
+#this function calculates the ratio of similar model words
 mw <- function(list1,list2){
   
   # Calculate the intersection and union sizes
@@ -94,7 +96,7 @@ mw <- function(list1,list2){
   
   return(similarity_percentage)
 }
-
+#this function returns the cosine similarity
 TMWMSim <- function(pi,pj,alpha,beta){
   #tmw_i <- exMW(data[[pi]]$title)
   #tmw_j <- exMW(data[[pj]]$title)
@@ -121,7 +123,7 @@ for (i in 1:(length(product_list)-1)){
     }
   }
 }
-
+#this function calculates the TP, FP, and FN to calculate F1
 Pe_Re_MSM <- function(clusters, product_list) {
   true_positives <- 0
   false_positives <- 0
@@ -153,7 +155,7 @@ Pe_Re_MSM <- function(clusters, product_list) {
   return_TP_FP_FN <- c(true_positives, false_positives, false_negatives)
   return(return_TP_FP_FN)
 }
-
+#this function calculates the PQ and PC for MSM given a cluster, so F1* can be calculated
 PC_PQ_MSM <- function(clusters, duplicates_sample, product_list) {
   comparisons <- sum(sapply(clusters, function(pair) choose(length(pair), 2)))
   duplicates_MSM_found <- 0
@@ -182,7 +184,7 @@ F1MSM <- function(PQ_msm, PC_msm) {
   return(F1_msm)
 }
 
-
+#this function checks whether a cluster has an infinite distance
 isInf <- function(clust1, clust2, distmat) {
   for (i in clust1) {
     for (j in clust2) {
@@ -198,7 +200,6 @@ isInf <- function(clust1, clust2, distmat) {
   }
   return(FALSE)
 }
-
 
 # Function to calculate the dissimilarity between two clusters using single linkage
 Dissim <- function(clust1, clust2, distmat) {
