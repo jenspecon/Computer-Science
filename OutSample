@@ -184,7 +184,7 @@ F1MSM <- function(PQ_msm, PC_msm) {
   return(F1_msm)
 }
 
-#this function checks whether a cluster has an infinite distance
+#this function checks whether the distance between two clusters contains an infinite distance
 isInf <- function(clust1, clust2, distmat) {
   for (i in clust1) {
     for (j in clust2) {
