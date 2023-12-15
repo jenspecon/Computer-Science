@@ -1,0 +1,20 @@
+#this is the code used to define the excel file television brands, where words that occur more frequently then 10 times are added
+abc <- list()
+for (i in data){
+  abc<-c(abc,i[[5]])
+}
+combined_string <- paste(abc, collapse = " ")
+
+# Split the combined string into words
+words <- strsplit(combined_string, " ")[[1]]
+
+# Get unique words
+unique_words <- unique(words)
+
+word_counts <- table(words)
+
+# Create a data frame with unique words and their counts
+result_words <- data.frame(word = names(word_counts), count = as.vector(word_counts))
+filtered_result_words <- result_words[grep("^[[:alpha:]]+$", result_words$word), ]
+new_words <- filtered_result_words[filtered_result_words$count > 10, ]
+new_words <- subset(new_words, select = -count)
