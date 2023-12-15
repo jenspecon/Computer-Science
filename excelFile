@@ -1,4 +1,7 @@
 #this is the code used to define the excel file television brands, where words that occur more frequently then 10 times are added
+# Load the JSON data
+data <- fromJSON("C:/Users/jensp/Downloads/TVs-all-merged.json")
+
 abc <- list()
 for (i in data){
   abc<-c(abc,i[[5]])
